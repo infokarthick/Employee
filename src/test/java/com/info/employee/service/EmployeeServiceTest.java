@@ -1,6 +1,7 @@
 package com.info.employee.service;
 
 import com.info.employee.model.Employee;
+import com.info.employee.model.entity.AddressEntity;
 import com.info.employee.model.entity.EmployeeEntity;
 import com.info.employee.model.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,8 +29,20 @@ class EmployeeServiceTest {
 
     @Test
     void fetchEmployees() {
+        EmployeeEntity employeeEntity = new EmployeeEntity();
+        employeeEntity.setId(333L);
+        employeeEntity.setName("joe");
+        employeeEntity.setDepartment("ijop");
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId(22L);
+        addressEntity.setCity("Bru");
+        addressEntity.setPostalCode(1050);
+        addressEntity.setEmployee(employeeEntity);
+        List<AddressEntity> addressEntitySet = new ArrayList<>();
+        addressEntitySet.add(addressEntity);
+        employeeEntity.setAddressEntities(addressEntitySet);
         when(employeeRepository.findAll())
-                .thenReturn(Collections.singletonList(new EmployeeEntity(100L, "Kumar", "Transport")));
+                .thenReturn(Collections.singletonList(employeeEntity));
 
         List<Employee> employeeList = employeeService.fetchEmployees();
 

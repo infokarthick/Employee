@@ -6,25 +6,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Entity(name = "EMPLOYEE")
+@Entity(name = "ADDRESS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmployeeEntity {
+public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column
-    public String name;
+    public String city;
 
-    @Column
-    public String department;
+    @Column(name = "postal_code")
+    public Integer postalCode;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee")
-    public List<AddressEntity> addressEntities;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    public EmployeeEntity employee;
 }

@@ -1,5 +1,6 @@
 package com.info.employee.controller;
 
+import com.info.employee.model.Address;
 import com.info.employee.model.Employee;
 import com.info.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
@@ -29,7 +32,9 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployees() throws Exception {
-        Employee employee = new Employee(1001L, "Karmug", "Engineering");
+        Set<Address> addressSet = new HashSet<>();
+        addressSet.add(new Address(11L, "Brussels", 1040));
+        Employee employee = new Employee(1001L, "Karmug", "Engineering", addressSet);
         when(employeeService.fetchEmployees()).thenReturn(Collections.singletonList(employee));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employee-api/employees"))
@@ -39,11 +44,11 @@ class EmployeeControllerTest {
 
     @Test
     void addEmployee() throws Exception {
-        Employee employee = new Employee(1001L, "Karmug", "Engineering");
+        String employeeRequest = "{\"employeeId\":1,\"employeeName\":\"Lokesh\",\"department\":\"electrical\",\"addressSet\":[{\"addressId\":1,\"city\":\"Brussels\",\"postalCode\":1050},{\"addressId\":2,\"city\":\"Antwerb\",\"postalCode\":2502}]}";
         doNothing().when(employeeService).createEmployee(isA(Employee.class));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/employee-api/employee")
-                        .contentType("application/json").content("{\"employeeName\":\"Mugil\",\"department\":\"Cooking\"}"))
+                        .contentType("application/json").content(employeeRequest))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }

@@ -1,4 +1,6 @@
 package com.info.employee.model;
 
-public record Employee(long employeeId, String employeeName, String department) {
+import java.util.Set;
+
+public record Employee(long employeeId, String employeeName, String department, Set<Address> addressSet) {
 }
