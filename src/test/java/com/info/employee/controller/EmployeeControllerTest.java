@@ -1,7 +1,7 @@
 package com.info.employee.controller;
 
-import com.info.employee.model.entity.EmployeeEntity;
-import com.info.employee.model.repository.EmployeeRepository;
+import com.info.employee.model.Employee;
+import com.info.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,15 +20,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmployeeControllerTest {
 
     @MockBean
-    EmployeeRepository employeeRepository;
+    EmployeeService employeeService;
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
     void getEmployees() throws Exception {
-        EmployeeEntity employeeEntity = new EmployeeEntity(1001L, "Karmug", "Engineering");
-        when(employeeRepository.findAll()).thenReturn(Collections.singletonList(employeeEntity));
+        Employee employee = new Employee(1001L, "Karmug", "Engineering");
+        when(employeeService.fetchEmployees()).thenReturn(Collections.singletonList(employee));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employee-api/employees"))
                 .andExpect(status().isOk())

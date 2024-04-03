@@ -1,7 +1,7 @@
 package com.info.employee.controller;
 
-import com.info.employee.model.entity.EmployeeEntity;
-import com.info.employee.model.repository.EmployeeRepository;
+import com.info.employee.model.Employee;
+import com.info.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
     @GetMapping(path = "employees", produces = "application/json")
-    public ResponseEntity<List<EmployeeEntity>> getEmployees() {
-        List<EmployeeEntity> employees = employeeRepository.findAll();
+    public ResponseEntity<List<Employee>> getEmployees() {
+        List<Employee> employees = employeeService.fetchEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 }
