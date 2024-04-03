@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +34,17 @@ class EmployeeControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employee-api/employees"))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void addEmployee() throws Exception {
+        Employee employee = new Employee(1001L, "Karmug", "Engineering");
+        doNothing().when(employeeService).createEmployee(isA(Employee.class));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employee-api/employee")
+                        .contentType("application/json").content("{\"employeeName\":\"Mugil\",\"department\":\"Cooking\"}"))
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 }

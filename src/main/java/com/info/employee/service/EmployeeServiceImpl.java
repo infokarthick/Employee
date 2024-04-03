@@ -20,6 +20,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees.stream().map(this::mapEntityToEmployee).toList();
     }
 
+    @Override
+    public void createEmployee(Employee employee) {
+        EmployeeEntity employeeEntity = EmployeeEntity.builder()
+                .department(employee.department()).name(employee.employeeName()).build();
+        employeeRepository.save(employeeEntity);
+    }
+
     private Employee mapEntityToEmployee(EmployeeEntity employeeEntity) {
         return new Employee(employeeEntity.getId(), employeeEntity.getName(), employeeEntity.getDepartment());
     }

@@ -5,9 +5,7 @@ import com.info.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,11 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getEmployees() {
         List<Employee> employees = employeeService.fetchEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "employee", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<List<Employee>> addEmployee(@RequestBody Employee employee) {
+        employeeService.createEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
